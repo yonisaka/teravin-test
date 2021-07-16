@@ -1,0 +1,367 @@
+<div>
+    <div class="row pt-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h2 class="my-1 ml-2 header-title">List Employee</h2>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="float-right d-none d-md-block">
+                                <button class="btn btn-primary px-5 mr-1" id="addModal" data-title="Add Employee" onclick="show_form()">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="datatable" 
+                        class="table table-bordered dt-responsive nowrap"
+                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th width="5%">ID</th>
+                                    <th width="20%">Name</th>
+                                    <th width="20%">Email</th>
+                                    <th width="20%">Mobile</th>
+                                    <th width="10%">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModal">Title</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="validation">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div id="notif_msg"></div>
+                        </div>
+                    </div>
+                </div>
+                <form id="form">
+                    <div class="mb-3" id="id_employee">
+                        <label for="recipient-name" class="col-form-label">Id:</label>
+                        <input type="text" class="form-control" name="id" readonly>
+                        </div>
+                    <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Nama:</label>
+                    <input type="text" class="form-control" name="name" placeholder="Fullname">
+                    </div>
+                    <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Email:</label>
+                    <input type="text" class="form-control" name="email" placeholder="example@email.com">
+                    </div>
+                    <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Mobile:</label>
+                    <input type="number" class="form-control" name="mobile" placeholder="Phone Number">
+                    </div>
+                    <div class="mb-3">
+                    <label for="message-text" class="col-form-label">Birth Date:</label>
+                    <input type="date" class="form-control" name="birth_date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Alamat:</label>
+                        <table id="tableAlamat" style="width:100%">
+                            <tr>
+                                <td width="100%">
+                                    <input type="text" class="form-control" name="alamat[]">
+                                    <td>
+                                        <a href="#" class="btn btn-primary mx-1" id="btnAdd"> + </a>
+                                    </td>
+                                </td>
+                            </tr>
+                        </table>
+                    <td></td>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="editModal" data-dismiss="modal" data-title="Edit Employee">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submit_process()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleDetail">Title</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row my-1">
+                    <div class="col-md-12">
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Id</div>
+                            <div class="col-md-6"><span class="id"></span></div>
+                        </div>
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Nama</div>
+                            <div class="col-md-6"><span class="name"></span></div>
+                        </div>
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Email</div>
+                            <div class="col-md-6"><span class="email"></span></div>
+                        </div>
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Mobile</div>
+                            <div class="col-md-6"><span class="mobile"></span></div>
+                        </div>
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Birth Date</div>
+                            <div class="col-md-6"><span class="birth_date"></span></div>
+                        </div>
+                        <div class="row mx-3 my-3">
+                            <div class="col-md-4">Alamat</div>
+                            <div class="col-md-6">
+                                <table class="alamat"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3 mx-2" id="notif">
+                    <div class="col-md-12">
+                        Are you sure want to delete this employee?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <div id="btnDelete"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="admin_template/assets/js/jquery.min.js"></script>
+<script src="admin_template/assets/js/bootstrap.bundle.min.js"></script>
+<script src="admin_template/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="admin_template/assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="admin_template/assets/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $('#validation').hide()
+        $('#datatable').DataTable({
+            language: {
+                searchPlaceholder: "Search by ID, Name or Email"
+            },
+            "columnDefs": [
+                {"width": "5%", "targets": 0},
+                {"width": "5%", "targets": 2}
+            ],
+            // searching: true,
+            paging: true,
+            responsive: true,
+            ajax: "/datatable",
+            processing: true,
+            pageLength: 5,
+            lengthChange: false,
+            "aoColumnDefs": [
+                {"bSearchable": true, "aTargets": [0]},
+            ],
+            columns: [
+                {data: 'id', name: 'id', orderable: true},
+                {data: 'name', name: 'name', orderable: true},
+                {data: 'email', name: 'email', orderable: true},
+                {data: 'mobile', name: 'mobile', orderable: true},
+                {
+                    data: 'id', name: 'id', orderable: false, render: function (id) {
+                        return `
+                        <button class="btn btn-sm btn-primary" onclick="detail(${id},'detail')">Detail</button>
+                        <button class="btn btn-sm btn-warning" onclick="show_form(${id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="detail(${id},'delete')">Delete</button>
+                `
+                    }
+                }
+            ]
+        });
+
+        var count = 0;
+        $("#btnAdd").click(function(){
+            if(count <=2){
+                $('#tableAlamat').append('<tr><td><input class="form-control" name="alamat[]" type="text"></td><td><a href="#" id="btnRemove" class="btn btn-danger mx-1"> - </a></td></tr>');
+                count++;
+            }
+        });
+
+        $("#tableAlamat").on("click", "#btnRemove", function() {
+            count--;
+            $(this).closest("tr").remove();
+        });
+    })
+
+    function show_form(id){
+        $(':input').val('');
+        if(id){
+            $('#id_employee').show();
+            $('#titleModal').html($('#editModal').data('title'))
+            $.ajax({
+            url: "/id/"+id,
+            type: "GET",
+            dataType: "JSON",
+            success: function (json) {
+                var date = new Date(json.data.birth_date)
+                var yyyy = date.getFullYear();
+                var dd = date.getDate();
+                var mm = date.getMonth()+1; 
+
+                if(dd<10){dd='0'+dd} 
+                if(mm<10){mm='0'+mm} 
+                var birth_date = yyyy+'-'+mm+'-'+dd;     
+                
+                $("[name='id']").val(json.data.id);
+                $("[name='name']").val(json.data.name);
+                $("[name='email']").val(json.data.email);
+                $("[name='mobile']").val(json.data.mobile);
+                $("[name='birth_date']").val(birth_date);
+
+                if(json.alamat.length > 1){
+                    $("[name='alamat[]']").val(json.alamat[0].alamat);
+                    for (let i = 1; i < json.alamat.length; i++){
+                        $('#tableAlamat').append('<tr><td><input class="form-control" name="alamat[]" type="text" value="'+ json.alamat[i].alamat +'"></td><td><a href="#" id="btnRemove" class="btn btn-danger mx-1"> - </a></td></tr>');
+                    }
+                } else {
+                    $("[name='alamat[]']").val(json.alamat[0].alamat);
+                }                
+            },
+            error: function (json) {
+                console.log('err')
+            },
+        });
+        } else {
+            $('#id_employee').hide();
+            $('#titleModal').html($('#addModal').data('title'))
+        }
+        $('#formModal').modal({show: true})
+    }
+
+    function submit_process() {
+        $('#notif_msg').html('')
+        let id = $("[name='id']").val();
+        let alamat = $("input[name='alamat[]']").map(function(){return $(this).val();}).get();
+        let params = {
+            name: $("[name='name']").val(),
+            email: $("[name='email']").val(),
+            mobile: $("[name='mobile']").val(),
+            birth_date: $("[name='birth_date']").val(),
+            alamat: alamat
+        }
+        if(!id){
+            console.log('add')
+            $.ajax({
+                url: "/",
+                type: "POST",
+                data: params,
+                dataType: "JSON",
+                success: function (json) {
+                    if(json.status_code == 200){
+                        $('#validation').hide()
+                        setTimeout(function () {
+                            window.location.replace("/");
+                        }, 500);
+                    } else {
+                        $('#validation').show()
+                        for (let i = 0; i < json.msg.errors.length; i++){
+                            $('#notif_msg').append('<strong>'+ json.msg.errors[i].param + '</strong> '+ json.msg.errors[i].msg+'<br/>')
+                        }        
+                    }
+                },
+                error: function (json) {
+                    console.log('err')
+                },
+            });
+        } else {
+            console.log('ed')
+            $.ajax({
+                url: "/id/"+id,
+                type: "PATCH",
+                data: params,
+                dataType: "JSON",
+                success: function (json) {
+                    if(json.status_code == 200){
+                        $('#validation').hide()
+                        setTimeout(function () {
+                            window.location.replace("/");
+                        }, 500);
+                    } else {
+                        $('#validation').show()
+                        for (let i = 0; i < json.msg.errors.length; i++){
+                            $('#notif_msg').append('<strong>'+ json.msg.errors[i].param + '</strong> '+ json.msg.errors[i].msg+'<br/>')
+                        }        
+                    }
+                },
+                error: function (json) {
+                    console.log('err')
+                },
+            });
+        }
+    }
+
+    function detail(id, status) {
+        $('.alamat').html('');
+        if (status == 'detail'){
+            $('#titleDetail').html('Detail Employee')
+            $('#notif').hide()
+            $('#btnDelete').html('')
+        } else {
+            $('#titleDetail').html('Delete Employee')
+            $('#notif').show()
+            $('#btnDelete').html('<button type="button" class="btn btn-danger" id="btnDelete" onclick="delete_process('+id+')">Delete</button>')
+        }
+        $.ajax({
+            url: "/id/"+id,
+            type: "GET",
+            dataType: "JSON",
+            success: function (json) {
+                var date = new Date(json.data.birth_date)
+                var yyyy = date.getFullYear();
+                var dd = date.getDate();
+                var mm = date.getMonth()+1; 
+
+                if(dd<10){dd='0'+dd} 
+                if(mm<10){mm='0'+mm} 
+                var birth_date = yyyy+'-'+mm+'-'+dd;     
+                // console.log(json)
+                $(".id").html(json.data.id);
+                $(".name").html(json.data.name);
+                $(".email").html(json.data.email);
+                $(".mobile").html(json.data.mobile);
+                $(".birth_date").html(moment(birth_date,'yyyy-mm-dd').format('MMMM do Y'));
+
+                for (let i = 0; i < json.alamat.length; i++){
+                    $('.alamat').append('<tr><td>'+ json.alamat[i].alamat +'</td></tr>');
+                }             
+            },
+            // error: function (json) {
+            //     console.log('err')
+            // },
+        });
+        $('#detailModal').modal({show: true})
+    }
+
+    function delete_process(id) {   
+        $.ajax({
+            url: "/id/"+id,
+            type: "DELETE",
+            dataType: "JSON",
+            success: function (json) {
+                console.log(json)
+                setTimeout(function () {
+                    window.location.replace("/");
+                }, 500);         
+            },
+            // error: function (json) {
+            //     console.log('err')
+            // },
+        });
+    }
+</script>
